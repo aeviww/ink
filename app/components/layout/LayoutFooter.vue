@@ -15,7 +15,7 @@
     <span aria-hidden="true">/\</span>
     <span>
       <a
-        href="https://github.com/aeviww"
+        href="https://github.com/aeviww/ink"
         target="_blank"
         rel="noopener noreferrer"
         class="underline decoration-line-strong underline-offset-4 hover:text-muted"
