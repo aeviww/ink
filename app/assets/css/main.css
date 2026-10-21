@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Arial, "Helvetica Neue", ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --color-canvas: #111110;
+  --color-surface: #161615;
+  --color-elevated: #1d1d1b;
+  --color-line: #2a2a27;
+  --color-line-strong: #3b3b37;
+  --color-fg: #eeeeea;
+  --color-muted: #a3a39c;
+  --color-subtle: #73736d;
+  --color-accent: #d4d4ce;
+  --color-danger: #e47d76;
+  --color-success: #91b897;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-dvh bg-canvas font-sans text-fg;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgb(212 212 206 / 0.2);
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent/60;
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.72);
+  }
+}
+
+@layer components {
+  .markdown {
+    @apply text-[1.0625rem] leading-[1.75] text-fg/90 break-words;
+  }
+
+  .markdown > * + * {
+    @apply mt-5;
+  }
+
+  .markdown h1,
+  .markdown h2,
+  .markdown h3,
+  .markdown h4,
+  .markdown h5,
+  .markdown h6 {
+    @apply font-semibold tracking-tight text-fg;
+  }
+
+  .markdown h1 { @apply mt-10 text-[1.75rem] leading-tight; }
+  .markdown h2 { @apply mt-10 text-[1.4rem] leading-snug; }
+  .markdown h3 { @apply mt-8 text-[1.2rem] leading-snug; }
+  .markdown h4,
+  .markdown h5,
+  .markdown h6 { @apply mt-6 text-base; }
+
+  .markdown > :first-child { @apply mt-0; }
+
+  .markdown a {
+    @apply text-fg underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-fg;
+  }
+
+  .markdown strong { @apply font-semibold text-fg; }
+  .markdown del,
+  .markdown s { @apply text-muted; }
+
+  .markdown blockquote {
+    @apply border-l-2 border-line-strong pl-5 text-muted;
+  }
+
+  .markdown ul { @apply list-disc pl-6; }
+  .markdown ol { @apply list-decimal pl-6; }
+  .markdown li { @apply pl-1; }
+  .markdown li + li { @apply mt-1.5; }
+  .markdown li > ul,
+  .markdown li > ol { @apply mt-1.5; }
+  .markdown li::marker { @apply text-subtle; }
+  .markdown li:has(> input[type="checkbox"]) { @apply list-none -ml-6; }
+  .markdown input[type="checkbox"] { @apply mr-2 align-middle accent-accent; }
+
+  .markdown code {
+    @apply rounded-sm bg-elevated px-1.5 py-0.5 font-mono text-[0.875em] text-fg;
+  }
+
+  .markdown pre {
+    @apply overflow-x-auto rounded-md border border-line bg-surface p-4 text-sm leading-relaxed;
+  }
+
+  .markdown pre code {
+    @apply border-0 bg-transparent p-0 text-[0.8125rem];
+  }
+
+  .markdown hr { @apply my-10 border-line; }
+
+  .markdown table {
+    @apply block w-full overflow-x-auto border-collapse text-[0.9375rem];
+  }
+
+  .markdown th,
+  .markdown td {
+    @apply border border-line px-3 py-2 text-left align-top;
+  }
+
+  .markdown th { @apply bg-surface font-medium text-fg; }
+  .markdown [align="center"] { @apply text-center; }
+  .markdown [align="right"] { @apply text-right; }
+}

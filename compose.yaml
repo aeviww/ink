@@ -1,0 +1,73 @@
+services:
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      NUXT_DATABASE_PATH: ${NUXT_DATABASE_PATH:-/app/data/ink.db}
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:?Set NUXT_PUBLIC_SITE_URL in .env}
+      NUXT_TRUST_PROXY: ${NUXT_TRUST_PROXY:-true}
+      NUXT_POW_DIFFICULTY: ${NUXT_POW_DIFFICULTY:-16}
+      NUXT_RATE_LIMIT_WINDOW_SECONDS: ${NUXT_RATE_LIMIT_WINDOW_SECONDS:-600}
+      NUXT_RATE_LIMIT_CREATE_PER_CLIENT: ${NUXT_RATE_LIMIT_CREATE_PER_CLIENT:-10}
+      NUXT_RATE_LIMIT_CREATE_GLOBAL: ${NUXT_RATE_LIMIT_CREATE_GLOBAL:-600}
+    volumes:
+      - ink_data:/app/data
+      - ink_backups:/app/backups
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/challenge').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: local
+      options:
+        max-size: 5m
+        max-file: "2"
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: local
+      options:
+        max-size: 5m
+        max-file: "2"
+
+volumes:
+  ink_data:
+  ink_backups:
+  caddy_data:
+  caddy_config:

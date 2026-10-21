@@ -1,0 +1,45 @@
+{
+  "name": "ink",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "анонимные публикации",
+  "license": "gplv3",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run --project unit",
+    "test:e2e": "vitest run --project e2e",
+    "test:all": "vitest run",
+    "backup": "node scripts/backup.mjs"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.147",
+    "@nuxt/icon": "^2.5.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "better-sqlite3": "^13.0.3",
+    "dompurify": "^3.4.17",
+    "jsdom": "^29.1.1",
+    "marked": "^18.1.1",
+    "nuxt": "^4.6.2",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "^4.3.4",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^24.19.2",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.5",
+    "vue-tsc": "^3.3.13"
+  }
+}
